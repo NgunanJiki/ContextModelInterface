@@ -4,6 +4,7 @@ import re
 from PyQt5.QtWidgets import QMainWindow, QAction, QFileDialog, QDesktopWidget, QSplitter, QListView, QVBoxLayout, QFrame, QLabel, QMessageBox
 from PyQt5.QtGui import QStandardItemModel, QStandardItem, QIcon
 from PyQt5.QtCore import Qt, QModelIndex
+from ConfirmExit import ConfirmExit
 
 from context_view import ContextView
 from model_view import ModelView
@@ -23,6 +24,7 @@ class View(QMainWindow):
         self.listView = QListView()
         self.model = QStandardItemModel()
         self.currentIndex = 0 if self.projects.__len__() > 0 else None
+        self.unsaved = {}
 
         ## save menu
 
@@ -45,7 +47,7 @@ class View(QMainWindow):
         exit = QAction(QIcon('./assets/exit.png'), '&Exit', self)
         exit.setShortcut('Ctrl+Q')
         exit.setStatusTip('Close')
-        exit.triggered.connect(self.app.quit)
+        exit.triggered.connect(self.quitApp)
         # generate menu
         generate = QAction(QIcon('./assets/generate.png'), '&Generate', self)
         generate.setShortcut('Ctrl+G')
@@ -210,12 +212,26 @@ class View(QMainWindow):
     # update project
     def updateProject(self, listIndex, name, attributes, rules, description):
         self.projects[self.currentIndex][1][listIndex] = {"name": name, "attributes": attributes, "rules": rules, "description": description }
+        # store unsaved
+        self.unsaved[self.projects[self.currentIndex][0]] = self.projects[self.currentIndex]
 
     # save context 
     def save(self):
-        for proj in self.projects:
+        for key in self.unsaved:
+            proj = self.unsaved[key]
             with open(proj[2], 'w') as file:
                 json.dump({ 'contexts': proj[1] }, file)
+        # clear
+        self.unsaved = {}
+
+    # quit app
+    def quitApp(self):
+        if (self.unsaved != {}):
+            dlg = ConfirmExit(self)
+            if dlg.exec():
+                self.app.quit()
+        else:
+            self.app.quit()
 
     # center window
     def center(self):
