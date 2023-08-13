@@ -104,17 +104,22 @@ class ContextData(QGroupBox):
         remove = QPushButton('x', self)
         remove.setFixedSize(QSize(30, 30))
         remove.setStyleSheet('border-radius: 25px; border: 2px solid gray')
-        remove.clicked.connect(lambda: self.removeAttribute(index))
 
         layoutbox = QHBoxLayout()
         layoutbox.addWidget(attr)
         layoutbox.addWidget(type)
         layoutbox.addWidget(remove)
         self.attrBox.addLayout(layoutbox)
+        layoutbox.itemAt(0).widget()
+        remove.clicked.connect(lambda: self.removeAttribute(layoutbox))
+        
 
-    def removeAttribute(self, index):
-        item = self.attrBox.itemAt(0).itemAt(index)
-        self.attrBox.itemAt(0).removeItem(item)
+    def removeAttribute(self, layoutbox):
+        self.attrs.remove(layoutbox.itemAt(0).widget())
+        self.types.remove(layoutbox.itemAt(1).widget())
+        self.deleteItemsOfLayout(layoutbox.layout())
+        self.attrBox.removeItem(layoutbox.layout())
+        self.makeUpdates()
 
     def addRule(self, ruleName, paramList, output):
         index = self.ruleBox.__len__()
@@ -142,7 +147,6 @@ class ContextData(QGroupBox):
         remove = QPushButton('x', self)
         remove.setFixedSize(QSize(30, 30))
         remove.setStyleSheet('border-radius: 25px; border: 2px solid gray')
-        remove.clicked.connect(lambda: self.removeRule(index))
 
         layoutbox = QVBoxLayout()
         hbox = QHBoxLayout()
@@ -153,10 +157,17 @@ class ContextData(QGroupBox):
         layoutbox.addWidget(returnType)
         self.ruleBox.addLayout(layoutbox)
 
-    def removeRule(self, index):
-        item = self.ruleBox.itemAt(0).itemAt(index)
-        self.ruleBox.itemAt(0).removeItem(item)
+        remove.clicked.connect(lambda: self.removeRule(layoutbox.layout()))
 
+    def removeRule(self, layoutbox):
+        self.ruleNames.remove(layoutbox.itemAt(0).itemAt(0).widget())
+        self.parameters.remove(layoutbox.itemAt(1).widget())
+        self.returnTypes.remove(layoutbox.itemAt(2).widget())
+        self.deleteItemsOfLayout(layoutbox.layout())
+        self.ruleBox.removeItem(layoutbox.layout())
+        self.makeUpdates()
+
+    # send updates to parent view
     def makeUpdates(self):
         attributes = []
         for i, att in enumerate(self.attrs):
@@ -172,3 +183,14 @@ class ContextData(QGroupBox):
             rules, 
             self.desc.toPlainText(),
         )
+
+    # clear layout recursively
+    def deleteItemsOfLayout(self, layout):
+        if layout is not None:
+            while layout.count():
+                item = layout.takeAt(0)
+                widget = item.widget()
+                if widget is not None:
+                    widget.setParent(None)
+                else:
+                    self.deleteItemsOfLayout(item.layout())

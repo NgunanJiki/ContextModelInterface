@@ -1,7 +1,7 @@
 import os
 import json
 from pathlib import Path
-from PyQt5.QtWidgets import QMainWindow, QAction, QFileDialog, QDesktopWidget, QSplitter, QListView, QVBoxLayout, QFrame, QLabel, QMessageBox
+from PyQt5.QtWidgets import QMainWindow, QAction, QFileDialog, QDesktopWidget, QSplitter, QListView, QVBoxLayout, QFrame, QLabel, QMessageBox, QWidget
 from PyQt5.QtGui import QStandardItemModel, QStandardItem, QIcon
 from PyQt5.QtCore import Qt, QModelIndex
 from ConfirmExit import ConfirmExit
@@ -117,6 +117,8 @@ class View(QMainWindow):
         self.splitter.addWidget(listFrame)
         if (self.currentIndex != None):
             self.splitter.addWidget(ContextView(self, self.projects[self.currentIndex][1]))
+        else:
+            self.splitter.addWidget(QWidget())
 
         self.setCentralWidget(self.splitter)
 
