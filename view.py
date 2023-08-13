@@ -1,6 +1,6 @@
 import os
 import json
-import re
+from pathlib import Path
 from PyQt5.QtWidgets import QMainWindow, QAction, QFileDialog, QDesktopWidget, QSplitter, QListView, QVBoxLayout, QFrame, QLabel, QMessageBox
 from PyQt5.QtGui import QStandardItemModel, QStandardItem, QIcon
 from PyQt5.QtCore import Qt, QModelIndex
@@ -122,6 +122,13 @@ class View(QMainWindow):
 
     # load settings
     def loadSettings(self):
+        # check if settings exists
+        exists = os.path.exists('settings.json')
+        if not exists:
+            Path('settings.json').touch()
+            with open('settings.json', 'w') as created:
+                json.dump({"appName": "Context Modular", "state": 0, "tab": "g", "projects": []}, created)
+
         with open('settings.json') as settings:
             data = json.load(settings)
             projects = []
