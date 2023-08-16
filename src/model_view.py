@@ -7,7 +7,7 @@ class ModelView(QGroupBox):
     def __init__(self, project):
         super().__init__()
         layout = QVBoxLayout()
-        layout.setSpacing(10)
+        layout.setSpacing(20)
 
         # add different classes
         for data in project[1]:
@@ -33,6 +33,6 @@ class ModelView(QGroupBox):
     def createClass(self, data):
         text = QPlainTextEdit()
         text.setReadOnly(True)
-        text.setFixedSize(QSize(500, 500))
+        text.setFixedSize(QSize(1000, 1000))
         text.setPlainText(data)
         return text

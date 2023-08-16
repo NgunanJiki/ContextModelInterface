@@ -2,7 +2,7 @@
 Thesis Project
 
 <!-- Project name -->
-<H6>Context Modular</H6>
+<p>Context Modular</p>
 
 <!-- Description -->
-<p>Context modeling system for context aware systems</p>
+<span>Context modeling system for context aware systems</span>
