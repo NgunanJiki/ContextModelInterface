@@ -19,7 +19,7 @@ class View(QMainWindow):
         # load 
         self.settings, self.projects = self.loadSettings()
         self.setWindowTitle(self.settings["appName"])
-        self.resize(900, 500)
+        self.resize(1300, 800)
         self.splitter = QSplitter(Qt.Horizontal)
         self.listView = QListView()
         self.model = QStandardItemModel()
@@ -102,8 +102,8 @@ class View(QMainWindow):
             self.model.appendRow(QStandardItem(it[0]))
 
         listFrame = QFrame()
-        listFrame.setMinimumWidth(50)
-        listFrame.setMaximumWidth(200)
+        listFrame.setMinimumWidth(250)
+        listFrame.setMaximumWidth(400)
         
         self.listView.setModel(self.model)
         self.listView.clicked[QModelIndex].connect(lambda i: self.setProject(i.row(), self.settings["tab"]))

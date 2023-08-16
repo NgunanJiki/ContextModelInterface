@@ -30,21 +30,21 @@ class ContextData(QGroupBox):
         layout.addWidget(QLabel('Context'))
         
         self.textEdit.setText(self.name)
-        self.textEdit.setFixedHeight(30)
+        self.textEdit.setFixedHeight(60)
         self.textEdit.textChanged.connect(self.makeUpdates)
         layout.addWidget(self.textEdit)
 
         layout.addWidget(QLabel('Description'))
         
         self.desc.setText(self.description)
-        self.desc.setFixedHeight(100)
+        self.desc.setFixedHeight(300)
         self.desc.textChanged.connect(self.makeUpdates)
         layout.addWidget(self.desc)
 
         layout.addWidget(QLabel('Attributes'))
         add = QPushButton('+', self)
-        add.setFixedSize(QSize(25, 25))
-        add.setStyleSheet('border-radius: 25px; border: 2px solid black')
+        add.setFixedSize(QSize(50, 50))
+        add.setStyleSheet('border-radius: 50px; border: 2px solid black')
         add.clicked.connect(lambda: self.addAtribute('', ''))
         attrOutbox = QVBoxLayout()
 
@@ -57,8 +57,8 @@ class ContextData(QGroupBox):
 
         layout.addWidget(QLabel('Rules'))
         makeRule = QPushButton('+', self)
-        makeRule.setFixedSize(QSize(25, 25))
-        makeRule.setStyleSheet('border-radius: 25px; border: 2px solid black')
+        makeRule.setFixedSize(QSize(50, 50))
+        makeRule.setStyleSheet('border-radius: 50px; border: 2px solid black')
         makeRule.clicked.connect(lambda: self.addRule('', '', ''))
         ruleOutbox = QVBoxLayout()
 
@@ -79,15 +79,15 @@ class ContextData(QGroupBox):
         hbox = QVBoxLayout()
         hbox.addWidget(scroll)
         self.setLayout(hbox)
-        self.setFixedHeight(600)
-        self.setFixedWidth(450)
+        self.setFixedHeight(800)
+        self.setFixedWidth(1000)
 
     def addAtribute(self, attribute, typeValue):
         index = self.attrBox.__len__()
         attr = QTextEdit()
         self.attrs.append(attr)
         attr.setText(attribute)
-        attr.setFixedHeight(30)
+        attr.setFixedHeight(60)
         attr.textChanged.connect(self.makeUpdates)
         attr.setPlaceholderText('attribute')
         
@@ -97,13 +97,13 @@ class ContextData(QGroupBox):
         type.addItems(['text', 'number'])
         type.setEditable(True)
         type.setEditText(typeValue)
-        type.setFixedHeight(30)
+        type.setFixedHeight(60)
         type.editTextChanged.connect(self.makeUpdates)
         type.setPlaceholderText('type')
 
         remove = QPushButton('x', self)
-        remove.setFixedSize(QSize(30, 30))
-        remove.setStyleSheet('border-radius: 25px; border: 2px solid gray')
+        remove.setFixedSize(QSize(60, 60))
+        remove.setStyleSheet('border-radius: 50px; border: 2px solid gray')
 
         layoutbox = QHBoxLayout()
         layoutbox.addWidget(attr)
@@ -126,27 +126,27 @@ class ContextData(QGroupBox):
         rule = QTextEdit()
         self.ruleNames.append(rule)
         rule.setText(ruleName)
-        rule.setFixedHeight(30)
+        rule.setFixedHeight(60)
         rule.textChanged.connect(self.makeUpdates)
         rule.setPlaceholderText('name')
 
         params = QTextEdit()
         self.parameters.append(params)
         params.setText(paramList)
-        params.setFixedHeight(30)
+        params.setFixedHeight(60)
         params.textChanged.connect(self.makeUpdates)
         params.setPlaceholderText('input1, input2, ...')
 
         returnType = QTextEdit()
         self.returnTypes.append(returnType)
         returnType.setText(output)
-        returnType.setFixedHeight(30)
+        returnType.setFixedHeight(60)
         returnType.textChanged.connect(self.makeUpdates)
         returnType.setPlaceholderText('output type')
 
         remove = QPushButton('x', self)
-        remove.setFixedSize(QSize(30, 30))
-        remove.setStyleSheet('border-radius: 25px; border: 2px solid gray')
+        remove.setFixedSize(QSize(60, 60))
+        remove.setStyleSheet('border-radius: 50px; border: 2px solid gray')
 
         layoutbox = QVBoxLayout()
         hbox = QHBoxLayout()
