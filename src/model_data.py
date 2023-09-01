@@ -16,6 +16,7 @@ class ModelData():
         # attributes
         for data in self.params:
             res += '\n\t private ' + self.extractType(data[1]) + ' ' + data[0]+';'
+        res += '\n'
         # methods
         for rule in self.rules:
             res += '\n\t public ' + self.extractType(rule[2]) + ' ' + rule[0]+'('+ rule[1]+')  {'
