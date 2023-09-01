@@ -154,7 +154,7 @@ class View(QMainWindow):
         if (tab == "g"):
             self.splitter.replaceWidget(1, ContextView(self, self.projects[index][1]))
         else:
-            self.splitter.replaceWidget(1, ModelView(self.projects[index]))
+            self.splitter.replaceWidget(1, ModelView(self, self.projects[index]))
         i = self.model.index(index, 0)
         self.listView.setCurrentIndex(i)
 
