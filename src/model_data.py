@@ -1,4 +1,5 @@
 # Model java class
+
 class ModelData():
     def __init__(self, name, desc, params, rules):
         self.name = name.capitalize()
@@ -28,6 +29,9 @@ class ModelData():
     def getModel(self):
         return self.model
 
+    def getName(self):
+        return self.name
+
     def extractType(self, type):
         if (type == 'text'):
             return 'String'
@@ -36,4 +40,4 @@ class ModelData():
         elif (type == 'decimal'):
             return 'double'
         else:
-            return type 
+            return type
