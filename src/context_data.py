@@ -1,9 +1,12 @@
 from PyQt5.QtWidgets import QGroupBox, QVBoxLayout, QLabel, QTextEdit, QComboBox, QPushButton, QHBoxLayout, QScrollArea, QFrame
 from PyQt5.QtCore import QSize
 
+from utilities import Utilities
+
 class ContextData(QGroupBox):
     def __init__(self, parentView, listIndex, name, attributes, rules, description = ''):
         super().__init__()
+        self.utilities = Utilities(parentView.app)
         self.parentView = parentView
         self.listIndex = listIndex
         self.name = name
@@ -30,7 +33,7 @@ class ContextData(QGroupBox):
         layout.addWidget(QLabel('Context'))
         
         self.textEdit.setText(self.name)
-        self.textEdit.setFixedHeight(60)
+        self.textEdit.setFixedHeight(self.utilities.computeY(50))
         self.textEdit.textChanged.connect(self.makeUpdates)
         layout.addWidget(self.textEdit)
 
@@ -43,7 +46,7 @@ class ContextData(QGroupBox):
 
         layout.addWidget(QLabel('Attributes'))
         add = QPushButton('+', self)
-        add.setFixedSize(QSize(50, 50))
+        add.setFixedSize(QSize(self.utilities.computeX(50), self.utilities.computeY(50)))
         add.setStyleSheet('border-radius: 50px; border: 2px solid black')
         add.clicked.connect(lambda: self.addAtribute('', ''))
         attrOutbox = QVBoxLayout()
@@ -57,7 +60,7 @@ class ContextData(QGroupBox):
 
         layout.addWidget(QLabel('Rules'))
         makeRule = QPushButton('+', self)
-        makeRule.setFixedSize(QSize(50, 50))
+        makeRule.setFixedSize(QSize(self.utilities.computeX(50), self.utilities.computeY(50)))
         makeRule.setStyleSheet('border-radius: 50px; border: 2px solid black')
         makeRule.clicked.connect(lambda: self.addRule('', '', ''))
         ruleOutbox = QVBoxLayout()
@@ -79,15 +82,15 @@ class ContextData(QGroupBox):
         hbox = QVBoxLayout()
         hbox.addWidget(scroll)
         self.setLayout(hbox)
-        self.setFixedHeight(800)
-        self.setFixedWidth(1000)
+        self.setFixedHeight(self.utilities.computeY(800))
+        self.setFixedWidth(self.utilities.computeX(1000))
 
     def addAtribute(self, attribute, typeValue):
         index = self.attrBox.__len__()
         attr = QTextEdit()
         self.attrs.append(attr)
         attr.setText(attribute)
-        attr.setFixedHeight(60)
+        attr.setFixedHeight(self.utilities.computeY(50))
         attr.textChanged.connect(self.makeUpdates)
         attr.setPlaceholderText('attribute')
         
@@ -97,12 +100,12 @@ class ContextData(QGroupBox):
         type.addItems(['text', 'number'])
         type.setEditable(True)
         type.setEditText(typeValue)
-        type.setFixedHeight(60)
+        type.setFixedHeight(self.utilities.computeY(50))
         type.editTextChanged.connect(self.makeUpdates)
         type.setPlaceholderText('type')
 
         remove = QPushButton('x', self)
-        remove.setFixedSize(QSize(60, 60))
+        remove.setFixedSize(QSize(self.utilities.computeX(50), self.utilities.computeY(50)))
         remove.setStyleSheet('border-radius: 50px; border: 2px solid gray')
 
         layoutbox = QHBoxLayout()
@@ -126,26 +129,26 @@ class ContextData(QGroupBox):
         rule = QTextEdit()
         self.ruleNames.append(rule)
         rule.setText(ruleName)
-        rule.setFixedHeight(60)
+        rule.setFixedHeight(self.utilities.computeY(50))
         rule.textChanged.connect(self.makeUpdates)
         rule.setPlaceholderText('name')
 
         params = QTextEdit()
         self.parameters.append(params)
         params.setText(paramList)
-        params.setFixedHeight(60)
+        params.setFixedHeight(self.utilities.computeY(50))
         params.textChanged.connect(self.makeUpdates)
         params.setPlaceholderText('input1, input2, ...')
 
         returnType = QTextEdit()
         self.returnTypes.append(returnType)
         returnType.setText(output)
-        returnType.setFixedHeight(60)
+        returnType.setFixedHeight(self.utilities.computeY(50))
         returnType.textChanged.connect(self.makeUpdates)
         returnType.setPlaceholderText('output type')
 
         remove = QPushButton('x', self)
-        remove.setFixedSize(QSize(60, 60))
+        remove.setFixedSize(QSize(self.utilities.computeX(50), self.utilities.computeY(50)))
         remove.setStyleSheet('border-radius: 50px; border: 2px solid gray')
 
         layoutbox = QVBoxLayout()
