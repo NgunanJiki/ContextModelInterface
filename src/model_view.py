@@ -17,10 +17,10 @@ class ModelView(QGroupBox):
             model = ModelData(data["name"], data["description"], data["attributes"], data["rules"])
             model.createModel()
 
-            export = QPushButton('export', self)
-            export.clicked.connect(lambda: self.export(model))
-
             plainClass = self.createClass(model.getModel())
+
+            export = QPushButton('export', self)
+            export.clicked.connect(lambda: self.export(model.getName(), model.getModel()))
 
             box = QHBoxLayout()
             box.addWidget(plainClass)
@@ -48,16 +48,16 @@ class ModelView(QGroupBox):
         text.setPlainText(data)
         return text
     
-    def export(self, model):
+    def export(self, name, data):
         folder = os.path.expanduser(f"~/Documents/")
         if not os.path.exists(folder):
             os.makedirs(folder)  
 
         # open file system
-        filename = QFileDialog.getSaveFileName(self, 'Export As', f"{folder}{model.getName()}", "Java files (*.java)")
+        filename = QFileDialog.getSaveFileName(self, 'Export As', f"{folder}{name}", "Java files (*.java)")
         if filename[0] == '':
             return 0    
 
         # write file
         with open(f"{filename[0]}.java", "w") as file:
-            file.write(model.getModel())
+            file.write(data)
