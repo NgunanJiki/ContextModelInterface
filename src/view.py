@@ -8,10 +8,12 @@ from ConfirmExit import ConfirmExit
 
 from context_view import ContextView
 from model_view import ModelView
+from utilities import Utilities
 
 class View(QMainWindow):
     def __init__(self, app):
         super().__init__()
+        self.utilities = Utilities(app)
         self.app = app
         self.initialize()
 
@@ -19,7 +21,8 @@ class View(QMainWindow):
         # load 
         self.settings, self.projects = self.loadSettings()
         self.setWindowTitle(self.settings["appName"])
-        self.resize(1300, 800)
+        size = self.utilities.computeXY(800, 600)
+        self.resize(size[0], size[1])
         self.splitter = QSplitter(Qt.Horizontal)
         self.listView = QListView()
         self.model = QStandardItemModel()
