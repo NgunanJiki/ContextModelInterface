@@ -22,19 +22,16 @@ class ContextView(QGroupBox):
         # add contexts
         for i, data in enumerate(self.contexts):
             ctx = ContextData(self.mainView, i, data["name"], data["attributes"], data["rules"], data["description"])
-            # self.grid.addWidget(ctx, i-1 if (i>0 and i%2!=0) else i, i%2)
             self.listBox.addWidget(ctx)
 
         # add context button
         addContext = QPushButton('Add New', self)
         addContext.setFixedSize(QSize(self.utilities.computeX(200), self.Y50))
         addContext.clicked.connect(self.addNew)
-        # self.grid.addWidget(addContext, self.grid.__len__()-1 if (self.grid.__len__()>0 and self.grid.__len__()%2!=0) else self.grid.__len__(), self.grid.__len__()%2)
         self.listBox.addWidget(addContext)
 
         instructions = QPlainTextEdit()
         instructions.setFixedWidth(self.utilities.computeX(500))
-        # instructions.setFixedSize(QSize(self.utilities.computeX(600), self.utilities.computeY(1000)))
         instructions.setReadOnly(True)
         instructions.setPlainText(self.utilities.getManual())
 
