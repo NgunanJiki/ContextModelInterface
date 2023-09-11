@@ -1,13 +1,17 @@
 # Model java class
+from interpreter import Interpreter
+
 
 class ModelData():
     def __init__(self, name, desc, params, rules):
+        self.interpreter = Interpreter()
         self.name = name.capitalize()
         self.desc = desc.capitalize()
         self.params = params
         self.rules = rules
 
         self.model = ''
+
 
     def createModel(self):
         res = '/**\n* '+self.desc+'\n*/'
@@ -19,8 +23,8 @@ class ModelData():
         res += '\n'
         # methods
         for rule in self.rules:
-            res += '\n\t public ' + self.extractType(rule[2]) + ' ' + rule[0]+'('+ rule[1]+')  {'
-            res += '\n\t\t// method definition'
+            res += '\n\t public ' + self.extractType(rule[3]) + ' ' + rule[0]+'('+ rule[1]+')  {'
+            res += self.interpreter.interprete(rule[2])
             res += '\n\t }'
         res += '\n}'
 

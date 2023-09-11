@@ -1,10 +1,11 @@
 import os
 import json
 from pathlib import Path
+from PyQt5 import QtGui
 from PyQt5.QtWidgets import QMainWindow, QAction, QFileDialog, QDesktopWidget, QSplitter, QListView, QVBoxLayout, QFrame, QLabel, QMessageBox, QWidget
 from PyQt5.QtGui import QStandardItemModel, QStandardItem, QIcon
 from PyQt5.QtCore import Qt, QModelIndex
-from ConfirmExit import ConfirmExit
+from confirm_exit import ConfirmExit
 
 from context_view import ContextView
 from model_view import ModelView
@@ -15,6 +16,7 @@ class View(QMainWindow):
         super().__init__()
         self.utilities = Utilities(app)
         self.app = app
+        
         self.initialize()
 
     def initialize(self):
@@ -105,8 +107,8 @@ class View(QMainWindow):
             self.model.appendRow(QStandardItem(it[0]))
 
         listFrame = QFrame()
-        listFrame.setMinimumWidth(250)
-        listFrame.setMaximumWidth(400)
+        listFrame.setMinimumWidth(self.utilities.computeX(300))
+        listFrame.setMaximumWidth(self.utilities.computeX(400))
         
         self.listView.setModel(self.model)
         self.listView.clicked[QModelIndex].connect(lambda i: self.setProject(i.row(), self.settings["tab"]))
@@ -251,5 +253,14 @@ class View(QMainWindow):
         cp = QDesktopWidget().availableGeometry().center()
         fg.moveCenter(cp)
         self.move(fg.topLeft())
+
+    # override close event
+    def closeEvent(self, event):
+        if (self.unsaved != {}):
+            dlg = ConfirmExit(self)
+            if not dlg.exec():
+                event.ignore()
+        else:
+            event.accept()
 
             
