@@ -31,7 +31,7 @@ class ContextView(QGroupBox):
         self.listBox.addWidget(addContext)
 
         instructions = QPlainTextEdit()
-        instructions.setFixedWidth(self.utilities.computeX(500))
+        instructions.setFixedWidth(self.utilities.computeX(400))
         instructions.setReadOnly(True)
         instructions.setPlainText(self.utilities.getManual())
 
