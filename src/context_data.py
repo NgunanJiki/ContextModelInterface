@@ -80,7 +80,7 @@ class ContextData(QScrollArea):
         self.setWidget(frame)
         self.setWidgetResizable(True)
         self.setFixedHeight(self.utilities.computeY(900))
-        self.setFixedWidth(self.utilities.computeX(800))
+        self.setFixedWidth(self.utilities.computeX(1000))
 
     def addAtribute(self, attribute, typeValue):
         index = self.attrBox.__len__()
@@ -143,7 +143,7 @@ class ContextData(QScrollArea):
         params.setPlaceholderText('input1, input2, ...')
 
         logic = QPlainTextEdit()
-        logic.setFixedSize(QSize(self.utilities.computeX(500), self.utilities.computeY(400)))
+        logic.setFixedSize(QSize(self.utilities.computeX(800), self.utilities.computeY(400)))
         logicBox = QHBoxLayout()
         logicBox.addWidget(QLabel('logic: '))
         logicBox.addWidget(logic)
