@@ -9,6 +9,7 @@ from confirm_exit import ConfirmExit
 
 from context_view import ContextView
 from model_view import ModelView
+from tests_view import TestsView
 from utilities import Utilities
 
 class View(QMainWindow):
@@ -63,6 +64,11 @@ class View(QMainWindow):
         models.setShortcut('Ctrl+M')
         models.setStatusTip('Models')
         models.triggered.connect(lambda: self.setProject(self.currentIndex, "m"))
+        # tests menu
+        tests = QAction(QIcon('./assets/tests.png'), '&Tests', self)
+        tests.setShortcut('Ctrl+T')
+        tests.setStatusTip('Tests')
+        tests.triggered.connect(lambda: self.setProject(self.currentIndex, "t"))
 
         ## menu bar
 
@@ -79,6 +85,10 @@ class View(QMainWindow):
         # Models
         fileMenu = menubar.addMenu('&Models')
         fileMenu.addAction(models)
+        # Tests
+        fileMenu = menubar.addMenu('&Tests')
+        fileMenu.addAction(tests)
+
 
         ## tool bar
 
@@ -92,6 +102,8 @@ class View(QMainWindow):
         toolbar.addAction(generate)
         toolbar = self.addToolBar('Models')
         toolbar.addAction(models)
+        toolbar = self.addToolBar('Tests')
+        toolbar.addAction(tests)
         toolbar = self.addToolBar('Exit')
         toolbar.addAction(exit)
 
@@ -158,8 +170,10 @@ class View(QMainWindow):
         self.settings["tab"] = tab
         if (tab == "g"):
             self.splitter.replaceWidget(1, ContextView(self, self.projects[index][1]))
-        else:
+        elif(tab == "m"):
             self.splitter.replaceWidget(1, ModelView(self, self.projects[index]))
+        else:
+            self.splitter.replaceWidget(1, TestsView(self, self.projects[index]))
         i = self.model.index(index, 0)
         self.listView.setCurrentIndex(i)
 
