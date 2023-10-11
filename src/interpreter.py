@@ -66,8 +66,6 @@ class Interpreter:
             colon =  item.find(':')
 
             if (':' in item):
-                if ('(' in prev or 'or' in prev):
-                    self.indent += '\t'
                 result += self.assign(item[0 : colon], item[colon+1:])
             elif ('isless' in item.lower()):
                 result += self.isLess(item[start+1 : comma], item[comma+1 : end])
@@ -86,8 +84,6 @@ class Interpreter:
             elif ('or' in item.lower()):
                 result += self.appendElse()
             elif ('>>' in item.lower()):
-                if ('(' in prev or 'or' in prev):
-                    self.indent += '\t'
                 result += self.imply(item.replace('>>', '').strip())
             elif ('<<' in item.lower()):
                 self.indent = self.indent[:-1]
@@ -95,21 +91,16 @@ class Interpreter:
             elif ('loop' in item.lower()):
                 result += self.loop(item[start+1 : end])
             elif ('out' in item.lower()):
-                if ('(' in prev or 'or' in prev):
-                    self.indent += '\t'
                 result += self.out(item.replace('out', '').strip())
             else:
-                if ('(' in prev or 'or' in prev):
-                    self.indent += '\t'
                 result += self.imply(item.strip())
 
-            if ('or' in item.lower()):
-                prev = '('
-            elif ('<<' in item.lower()):
-                prev = ''
-            else:
-                prev = item
-        result = re.sub(r'else {\s+if', 'else if', result)                    
+            if (result[-1] == '{' and 'or' not in prev):
+                self.indent += '\t'
+
+            prev = item
+
+        result = re.sub(r'else {\s*if', 'else if', result)                    
         return result
     
 
@@ -175,8 +166,6 @@ class PyInterpreter:
             colon =  item.find(':')
 
             if (':' in item):
-                if ('(' in prev):
-                    self.indent += '\t'
                 result += self.assign(item[0 : colon], item[colon+1:])
             elif ('isless' in item.lower()):
                 result += self.isLess(item[start+1 : comma], item[comma+1 : end])
@@ -195,26 +184,20 @@ class PyInterpreter:
             elif ('or' in item.lower()):
                 result += self.appendElse()
             elif ('>>' in item.lower()):
-                if ('(' in prev):
-                    self.indent += '\t'
                 result += self.imply(item.replace('>>', '').strip())
             elif ('<<' in item.lower()):
                 self.indent = self.indent[:-1]
             elif ('loop' in item.lower()):
                 result += self.loop(item[start+1 : end])
             elif ('out' in item.lower()):
-                if ('(' in prev):
-                    self.indent += '\t'
                 result += self.out(item.replace('out', '').strip())
             else:
                 result += self.imply(item.strip())
-            
-            if ('or' in item.lower()):
-                self.indent += '\t'
-            elif ('<<' in item.lower()):
-                prev = ''
-            else:                    
-                prev = item
 
-        result = re.sub(r'else:\s+if', 'elif', result)
+            if (result[-1] == ':' and 'or' not in prev):
+                self.indent += '\t'
+
+            prev = item
+            
+        result = re.sub(r'else:\s*if', 'elif', result)
         return result
