@@ -95,12 +95,16 @@ class Interpreter:
             else:
                 result += self.imply(item.strip())
 
-            if (result[-1] == '{' and 'or' not in prev):
+            # repair syntax
+            if (re.search(r'else {\s*if', result) != None):
+                result = re.sub(r'else {\s*if', 'else if', result)
+                self.indent = self.indent[:-1]
+
+            if (result[-1] == '{'):
                 self.indent += '\t'
 
             prev = item
 
-        result = re.sub(r'else {\s*if', 'else if', result)                    
         return result
     
 
@@ -194,10 +198,12 @@ class PyInterpreter:
             else:
                 result += self.imply(item.strip())
 
-            if (result[-1] == ':' and 'or' not in prev):
-                self.indent += '\t'
+            # repair syntax
+            if (re.search(r'else:\s*if', result) != None):
+                result = re.sub(r'else:\s*if', 'elif', result)
+                self.indent = self.indent[:-1]
 
-            prev = item
+            if (result[-1] == ':'):
+                self.indent += '\t'
             
-        result = re.sub(r'else:\s*if', 'elif', result)
         return result
